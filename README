@@ -1,1 +1,1 @@
-Puppet receipe to add all mount points of nodes into nagios.
+Puppet receipe to use check_disk for each disk on a node as different services
