@@ -1,0 +1,15 @@
+log_facility=daemon
+pid_file=/var/run/nrpe.pid
+server_port=5666
+nrpe_user=nagios
+nrpe_group=nagios
+allowed_hosts=127.0.0.1,10.0.1.1
+ 
+dont_blame_nrpe=0
+debug=0
+command_timeout=60
+connection_timeout=300
+
+<%
+disks.split(',').each do |disk| %>
+command[disk_<%= disk %>]=/usr/lib64/nagios/plugins/check_disk -w 15% -c 10% -p <%= disk %><% end %>
