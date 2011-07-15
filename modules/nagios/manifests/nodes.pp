@@ -23,24 +23,14 @@ class nagios::nodes {
     }
 
     file {
-        'facter_disks':
-            path => "$rubysitedir/facter/disks.rb",
+            '/etc/nagios/nrpe.cfg':
+            content => template('nagios/nrpe.cfg.erb'),
             ensure => present,
-            source => 'puppet:///modules/nagios/disks.rb',
-            require => Service["nrpe"],
+            require => Package['nrpe'],
+            notify => Service['nrpe'],
     }
-
-    if ($disks){
-        file {
-                '/etc/nagios/nrpe.cfg':
-                content => template('nagios/nrpe.cfg.erb'),
-                ensure => present,
-                require => Package['nrpe'],
-                notify => Service['nrpe'],
-        }
-        
-        $array_of_disks = split($disks, ',')
-        part_check { $array_of_disks: }
-    }
+    
+    $array_of_disks = split($disks, ',')
+    part_check { $array_of_disks: }
 
 }
